@@ -310,3 +310,38 @@ R1(config-subif)# interface g0/0.2
 R1(config-subif)# ip access-group 101 in
 R1(config-subif)# line vty 0 4
 R1(config-line)# access-class 102 in
+
+
+
+
+IPV6 
+
+
+Router>EN
+Router#config t
+Enter configuration commands, one per line.  End with CNTL/Z.
+Router(config)#
+Router(config)#
+Router(config)#
+Router(config)#
+Router(config)#
+Router(config)#ipv6 unicast
+Router(config)#ipv6 unicast-routing 
+Router(config)#int s0/0/0
+Router(config-if)#ipv6 en
+Router(config-if)#ipv6 enable 
+Router(config-if)#ipv6 address 2001:DB8:1:13::1/64
+Router(config-if)#ipv6 rip p5 enable
+Router(config-if)#clock rate 64000
+This command applies only to DCE interfaces
+Router(config-if)#no shut
+Router(config-if)#
+Router(config-if)#exit
+Router(config)#ipv6 unicast-routing
+Router(config)#int g0/0
+Router(config-if)#ipv6 enable
+Router(config-if)#ipv6 address 2001:DB8:1:30::1/64
+Router(config-if)#ipv6 rip p5 en
+Router(config-if)#ipv6 rip p5 enable 
+Router(config-if)#no shut
+Router(config-if)#
