@@ -1,0 +1,11 @@
+ip domain-name ccnasecurity.com 
+username SSHadmin privilege 15 secret ciscosshpa55 
+line vty 0 4 
+login local 
+transport input ssh 
+---change hostname---
+crypto key generate rsa 
+1024 
+ip ssh time-out 90 
+ip ssh authentication-retries 2 
+ip ssh version 2 end

@@ -1,0 +1,23 @@
+Router(config)#access-list 100 permit tcp 172.22.34.64 0.0.0.31 host 172.22.34.62 eq ftp
+Router(config)#access-list 100 permit icmp 172.22.34.64 0.0.0.31 host 172.22.34.62 
+Router(config-if)#ip access-group 100 in
+
+
+a.Ping from PC1 to Server. 
+
+b. FTP from PC1 to Server. 
+The username and password are both cisco.
+PC> ftp 172.22.34.62
+
+c. Exit the FTP service of the Server.
+ftp> quit
+
+Router(config-if)#ip access-list extended HTTP_ONLY
+Router(config-ext-nacl)#permit tcp 172.22.34.96 0.0.0.15 host 172.22.34.62 eq www
+Router(config-ext-nacl)#permit icmp 172.22.34.96 0.0.0.15 host 172.22.34.62
+Router(config-ext-nacl)#int g0/1
+Router(config-if)#ip access-group HTTP_ONLY in
+
+a. Ping from PC2 to Server. The ping should be successful.
+b. FTP from PC2 to Server. The connection should fail.
+c. Open the web browser on PC2 and enter the IP address of Server as the URL. The connection should be successful.

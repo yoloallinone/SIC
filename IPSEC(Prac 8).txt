@@ -1,0 +1,50 @@
+!!! Script for R1
+config t
+license boot module c1900 technology-package securityk9
+"yes "
+end
+copy running-config startup-config
+reload
+config t
+access-list 110 permit ip 192.168.1.0 0.0.0.255 192.168.3.0 0.0.0.255
+crypto isakmp policy 10 
+encryption aes 256 
+authentication preshare 
+group 5 
+exit
+crypto isakmp key vpnpa55 address 10.2.2.2 
+crypto ipsec transform-set VPN-SET esp-aes esp-sha-hmac 
+crypto map VPN-MAP 10 ipsec-isakmp 
+description VPN connection to R3 
+set peer 10.2.2.2
+set transform-set VPN-SET 
+match address 110 
+exit
+interface S0/0/0
+crypto map VPN-MAP
+
+!!! Script for R3
+config t
+access-list 110 permit ip 192.168.3.0 0.0.0.255 192.168.1.0 0.0.0.255
+crypto isakmp policy 10
+encryption aes 256 
+authentication pre-share 
+group 5 
+exit
+crypto isakmp key vpnpa55 address 10.1.1.2 
+crypto ipsec transform-set VPN-SET esp-aes esp-sha-hmac 
+crypto map VPN-MAP 10 ipsec-isakmp 
+description VPN connection to R1
+set peer 10.1.1.2
+set transform-set VPN-SET 
+match address 110 
+exit
+interface S0/0/1 
+crypto map VPN-MAP
+
+
+
+
+Output:
+R1#show crypto ipsec sa
+R3#show crypto ipsec sa

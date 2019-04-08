@@ -1,0 +1,16 @@
+Router(config)#username Admin1 secret admin1
+Router(config)#aaa new-model
+Router(config)#aaa authentication login default local
+Router(config)#line console 0
+Router(config-line)#login authentication default
+Router(config-line)#end
+
+
+Router(config)#ip domain-name ccnasecurity.com
+Router(config)#username SSHadmin privilege 15 secret ciscosshpa55
+Router(config)#crypto key generate rsa
+R1(config)# aaa authentication login SSH-LOGIN local
+R1(config)#line vty 0 4
+R1(config-line)#login authentication SSH-LOGIN
+R1(config-line)#transport input ssh
+R1(config-line)#end

@@ -1,0 +1,46 @@
+!!!Script for Central
+conf t
+spanning-tree vlan 1 root primary 
+end
+
+!!!Script for SW-1
+conf t
+spanning-tree vlan 1 root secondary
+interface range f0/23 - 24
+spanning-tree guard root 
+end
+
+!!!Script for SW-2 
+conf t
+interface range f0/23 - 24
+spanning-tree guard root
+end
+!!!Script for SW-A 
+conf t 
+interface range f0/1 - 4 
+spanning-tree portfast 
+spanning-tree bpduguard enable
+interface range f0/1 - 22
+switchport mode access 
+switchport port-security 
+switchport port-security maximum 2
+switchport port-security violation shutdown
+switchport port-security mac-address sticky
+interface range f0/5 - 22 
+shutdown 
+end
+
+!!!Script for SW-B 
+conf t 
+interface range f0/1 - 4
+spanning-tree portfast 
+spanning-tree bpduguard enable 
+interface range f0/1 - 22
+switchport mode access 
+switchport port-security 
+switchport port-security maximum 2
+switchport port-security violation shutdown
+switchport port-security mac-address sticky
+interface range f0/5 - 22 
+shutdown 
+end

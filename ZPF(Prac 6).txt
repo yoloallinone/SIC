@@ -1,0 +1,63 @@
+R3(config)# license boot module c1900 technology-package securityk9
+R3(config)# do write
+R3(config)# do reload
+R3(config)# zone security IN-ZONE
+R3(config-sec-zone)# exit
+R3(config-sec-zone)# zone security OUT-ZONE
+R3(config-sec-zone)# exit
+R3(config)# access-list 101 permit ip 192.168.3.0 0.0.0.255 any
+R3(config)# class-map type inspect match-all IN-NET-CLASS-MAP
+R3(config-cmap)# match access-group 101
+R3(config-cmap)# exit
+R3(config)# policy-map type inspect IN-2-OUT-PMAP
+R3(config-pmap)# class type inspect IN-NET-CLASS-MAP
+R3(config-pmap-c)# inspect
+R3(config-pmap-c)# exit
+R3(config-pmap)# exit
+R3(config)# zone-pair security IN-2-OUT-ZPAIR source IN-ZONE destination OUT-ZONE
+R3(config-sec-zone-pair)# service-policy type inspect IN-2-OUT-PMAP
+R3(config-sec-zone-pair)# exit
+R3(config)# interface g0/1
+R3(config-if)# zone-member security IN-ZONE
+R3(config-if)# exit
+R3(config)# interface s0/0/1
+R3(config-if)# zone-member security OUT-ZONE
+R3(config-if)# exit
+
+
+
+
+
+----Test Firewall Functionality from IN-ZONE to OUT-ZONE------
+
+Step 1: 
+From the PC-C command prompt, ping PC-A at 192.168.1.3. The ping should succeed.
+
+Step 2: 
+a. From the PC-C command prompt, SSH to R2 at 10.2.2.2.
+  >ssh -l SSHAdmin 10.2.2.2
+  Password:ciscosshpa55
+ The SSH session should succeed.
+
+
+
+
+R3# show policy-map type inspect zone-pair sessions
+
+
+
+
+Enter the server IP address 192.168.1.3 in PC-C web browser
+
+
+
+R3# show policy-map type inspect zone-pair sessions
+
+
+
+
+Step 1: From the PC-A server command prompt, ping PC-C.
+From the PC-A command prompt, ping PC-C at 192.168.3.3. The ping should fail.
+Step 2: From R2, ping PC-C.
+From R2, ping PC-C at 192.168.3.3. The ping should fail.
+

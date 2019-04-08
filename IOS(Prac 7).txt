@@ -1,0 +1,37 @@
+R1(config)# license boot module c1900 technology-package securityk9
+R3(config)# do write
+R3(config)# do reload
+R1# mkdir ipsdir
+R1(config)# ip ips config location flash:ipsdir
+R1(config)# logging host <ip address>
+R1(config)# service timestamps log datetime msec
+R1(config)# ip ips name iosips
+R1(config)# ip ips notify log
+R1(config)# ip ips signature-category
+R1(config-ips-category)# category all
+R1(config-ips-category-action)# retired true
+R1(config-ips-category-action)# exit
+R1(config-ips-category)# category ios_ips basic
+R1(config-ips-category-action)# retired false
+R1(config-ips-category-action)# exit
+R1(config-ips-cateogry)# exit
+R1(config)# interface g0/1
+R1(config-if)# ip ips iosips out
+R1(config)# ip ips signature-definition
+R1(config-sigdef)# signature 2004 0
+R1(config-sigdef-sig)# status
+R1(config-sigdef-sig-status)# retired false
+R1(config-sigdef-sig-status)# enabled true
+R1(config-sigdef-sig-status)# exit
+R1(config-sigdef-sig)# engine
+R1(config-sigdef-sig-engine)# event-action produce-alert R1(config-sigdefsig-engine)# event-action deny-packet-inline
+R1(config-sigdef-sig-engine)# exit
+R1(config-sigdef-sig)# exit
+R1(config-sigdef)# exit
+
+
+
+
+Output:
+
+R1#show ip ips all
